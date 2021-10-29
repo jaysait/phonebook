@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import './App.css';
+import Filter from './components/Filter';
+import PersonForm from './components/PersonForm';
+import Persons from './components/Persons';
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -28,7 +31,7 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault();
-    const newPerson = { name: newName, number: newNumber };
+    const newPerson = { name: newName, number: newNumber, id: persons.length + 1 };
     const alreadyExists = persons.filter((p) => p.name === newName).length;
 
     if (alreadyExists > 0) {
@@ -42,29 +45,18 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with <input id='filter' value={filter} onChange={handleChangeFilter} />
-      </div>
+      <Filter filter={filter} changeFilter={handleChangeFilter} />
       <h2>add a new </h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input id='new-person-name' value={newName} onChange={handleChangeName} />
-        </div>
-        <div>
-          number: <input id='new-person-number' value={newNumber} onChange={handleChangeNumber} />
-        </div>
-        <div>
-          <button type='submit'>add</button>
-        </div>
-      </form>
+
+      <PersonForm
+        createPerson={addPerson}
+        newName={newName}
+        newNumber={newNumber}
+        changeName={handleChangeName}
+        changeNumber={handleChangeNumber}
+      />
       <h2>Numbers</h2>
-      {personsToShow.map((person) => {
-        return (
-          <div key={person.id}>
-            {person.name} {person.number}
-          </div>
-        );
-      })}
+      <Persons persons={personsToShow} />
     </div>
   );
 };
