@@ -51,17 +51,28 @@ const App = () => {
       );
       if (result) {
         const updatedPerson = { ...alreadyExists, number: newNumber };
-        personService.update(alreadyExists.id, updatedPerson).then((returnedPerson) => {
-          setPersons(
-            persons.map((person) => (person.id !== alreadyExists.id ? person : returnedPerson))
-          );
-          setNewName('');
-          setNewNumber('');
-          setMessage({ message: `Updated ${alreadyExists.name}`, type: 'success' });
-          setTimeout(() => {
-            setMessage({ message: '', type: '' });
-          }, 5000);
-        });
+        personService
+          .update(alreadyExists.id, updatedPerson)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((person) => (person.id !== alreadyExists.id ? person : returnedPerson))
+            );
+            setNewName('');
+            setNewNumber('');
+            setMessage({ message: `Updated ${alreadyExists.name}`, type: 'success' });
+            setTimeout(() => {
+              setMessage({ message: '', type: '' });
+            }, 5000);
+          })
+          .catch((error) => {
+            setMessage({
+              message: `Information of ${alreadyExists.name} has already been removed from server.`,
+              type: 'error',
+            });
+            setTimeout(() => {
+              setMessage({ message: '', type: '' });
+            }, 5000);
+          });
       }
       //  alert(`${newName} is already added to phonebook`);
     } else {
