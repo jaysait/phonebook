@@ -41,10 +41,23 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault();
     const newPerson = { name: newName, number: newNumber };
-    const alreadyExists = persons.filter((p) => p.name === newName).length;
+    const alreadyExists = persons.find((p) => p.name === newName);
 
-    if (alreadyExists > 0) {
-      alert(`${newName} is already added to phonebook`);
+    if (alreadyExists) {
+      const result = window.confirm(
+        `${alreadyExists.name} is already added to phonebook, replace the old number with a new one?`
+      );
+      if (result) {
+        const updatedPerson = { ...alreadyExists, number: newNumber };
+        personService.update(alreadyExists.id, updatedPerson).then((returnedPerson) => {
+          setPersons(
+            persons.map((person) => (person.id !== alreadyExists.id ? person : returnedPerson))
+          );
+          setNewName('');
+          setNewNumber('');
+        });
+      }
+      //  alert(`${newName} is already added to phonebook`);
     } else {
       personService.create(newPerson).then((person) => {
         setPersons(persons.concat(person));
