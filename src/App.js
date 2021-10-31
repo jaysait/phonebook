@@ -25,6 +25,19 @@ const App = () => {
   };
   const personsToShow = findPersonsByFilter(filter);
 
+  const handleDeletePerson = (event) => {
+    event.preventDefault();
+    const id = parseInt(event.target.value);
+    const p = persons.find((person) => person.id === id);
+
+    const result = window.confirm(`Delete ${p.name}?`);
+    if (result) {
+      personService.deletePerson(event.target.value).then((res) => {
+        setPersons(persons.filter((person) => person.id !== id));
+      });
+    }
+  };
+
   const addPerson = (event) => {
     event.preventDefault();
     const newPerson = { name: newName, number: newNumber };
@@ -61,7 +74,7 @@ const App = () => {
         changeNumber={handleChangeNumber}
       />
       <h2>Numbers</h2>
-      <Persons persons={personsToShow} />
+      <Persons persons={personsToShow} deletePerson={handleDeletePerson} />
     </div>
   );
 };

@@ -10,5 +10,11 @@ const create = (newObject) => {
   const request = axios.post(baseUrl, newObject);
   return request.then((response) => response.data);
 };
+const deletePerson = (id) => {
+  const request = axios.delete(`${baseUrl}/${id}`);
+  return request
+    .then((response) => console.log(`deleted person ${id}`))
+    .catch((error) => console.error('error: ', error));
+};
 
-export default { getAll, create };
+export default { getAll, create, deletePerson };
