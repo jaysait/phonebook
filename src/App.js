@@ -27,15 +27,17 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault();
-    const newPerson = { name: newName, number: newNumber, id: persons.length + 1 };
+    const newPerson = { name: newName, number: newNumber };
     const alreadyExists = persons.filter((p) => p.name === newName).length;
 
     if (alreadyExists > 0) {
       alert(`${newName} is already added to phonebook`);
     } else {
-      setPersons([...persons, newPerson]);
-      setNewName('');
-      setNewNumber('');
+      axios.post('http://localhost:3001/persons', newPerson).then((response) => {
+        setPersons(persons.concat(response.data));
+        setNewName('');
+        setNewNumber('');
+      });
     }
   };
 
