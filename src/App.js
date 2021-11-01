@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import Filter from './components/Filter';
+import Header from './components/Header';
 import Notification from './components/Notification';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
 import personService from './services/persons';
+import { Container, Divider } from '@mui/material';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -96,20 +98,25 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
-      <Notification message={message.message} type={message.type} />
-      <Filter filter={filter} changeFilter={handleChangeFilter} />
-      <h2>add a new </h2>
+      <Header />
+      <br />
+      <Container>
+        <Notification message={message.message} type={message.type} />
+        <Filter filter={filter} changeFilter={handleChangeFilter} />
+        <h2>Add New Phone </h2>
 
-      <PersonForm
-        createPerson={addPerson}
-        newName={newName}
-        newNumber={newNumber}
-        changeName={handleChangeName}
-        changeNumber={handleChangeNumber}
-      />
-      <h2>Numbers</h2>
-      <Persons persons={personsToShow} deletePerson={handleDeletePerson} />
+        <PersonForm
+          createPerson={addPerson}
+          newName={newName}
+          newNumber={newNumber}
+          changeName={handleChangeName}
+          changeNumber={handleChangeNumber}
+        />
+      </Container>
+      <Container>
+        <h2>Numbers</h2>
+        <Persons persons={personsToShow} deletePerson={handleDeletePerson} />
+      </Container>
     </div>
   );
 };
