@@ -29,6 +29,13 @@ const App = () => {
   };
   const personsToShow = findPersonsByFilter(filter);
 
+  const displayMessage = ({ message, type }) => {
+    setMessage({ message, type });
+    setTimeout(() => {
+      setMessage({ message: '', type: '' });
+    }, 5000);
+  };
+
   const handleDeletePerson = (event) => {
     event.preventDefault();
     const id = event.target.value;
@@ -61,32 +68,24 @@ const App = () => {
             );
             setNewName('');
             setNewNumber('');
-            setMessage({ message: `Updated ${alreadyExists.name}`, type: 'success' });
-            setTimeout(() => {
-              setMessage({ message: '', type: '' });
-            }, 5000);
+            displayMessage({ message: `Updated ${alreadyExists.name}`, type: 'success' });
           })
           .catch((error) => {
-            setMessage({
-              message: `Information of ${alreadyExists.name} has already been removed from server.`,
-              type: 'error',
-            });
-            setTimeout(() => {
-              setMessage({ message: '', type: '' });
-            }, 5000);
+            displayMessage({ message: `${error.response.data.error}`, type: 'error' });
           });
       }
-      //  alert(`${newName} is already added to phonebook`);
     } else {
-      personService.create(newPerson).then((person) => {
-        setPersons(persons.concat(person));
-        setNewName('');
-        setNewNumber('');
-        setMessage({ message: `Added ${person.name}`, type: 'success' });
-        setTimeout(() => {
-          setMessage({ message: '', type: '' });
-        }, 5000);
-      });
+      personService
+        .create(newPerson)
+        .then((person) => {
+          setPersons(persons.concat(person));
+          setNewName('');
+          setNewNumber('');
+          displayMessage({ message: `Added ${person.name}`, type: 'success' });
+        })
+        .catch((error) => {
+          displayMessage({ message: `${error.response.data.error}`, type: 'error' });
+        });
     }
   };
 
