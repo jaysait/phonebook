@@ -31,7 +31,7 @@ const App = () => {
 
   const handleDeletePerson = (event) => {
     event.preventDefault();
-    const id = parseInt(event.target.value);
+    const id = event.target.value;
     const p = persons.find((person) => person.id === id);
 
     const result = window.confirm(`Delete ${p.name}?`);
