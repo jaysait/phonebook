@@ -19,6 +19,8 @@ You will also see any lint errors in the console.
 
 Runs the backend json-server on port 3001 to connect with the front portion, using the db.json file for storage.  This is just temp until hooked up with phonebook-backend project.
 
+or checkout [https://github.com/jaysait/phonebook-backend](https://github.com/jaysait/phonebook-backend) for the backend with mongodb
+
 ### `npm test`
 
 Launches the test runner in the interactive watch mode.\
